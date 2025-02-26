@@ -11,9 +11,12 @@ class Program
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("🏋️ Menú Principal");
             Console.WriteLine("1. Insertar Usuario");
             Console.WriteLine("2. Modificar Usuario");
-            Console.WriteLine("3. Salir");
+            Console.WriteLine("3. Insertar Registro de Medidas");
+            Console.WriteLine("4. Modificar Registro de Medidas");
+            Console.WriteLine("5. Salir");
             Console.Write("Seleccione una opción: ");
 
             string opcion = Console.ReadLine();
@@ -27,6 +30,12 @@ class Program
                     ModificarUsuario();
                     break;
                 case "3":
+                    InsertarMedidas();
+                    break;
+                case "4":
+                    ModificarMedidas();
+                    break;
+                case "5":
                     return;
                 default:
                     Console.WriteLine("❌ Opción no válida. Presione Enter para continuar...");
@@ -34,7 +43,8 @@ class Program
                     break;
             }
         }
-    }
+    
+}
 
     static void InsertarUsuario()
     {
@@ -116,6 +126,120 @@ class Program
         Console.ReadLine();
     }
 
+    // Métodos para Registro de Medidas
+    static void InsertarMedidas()
+    {
+        Console.Write("ID del Usuario: ");
+        int idUsuario = ValidarEntero();
+
+        string fechaRegistro = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Fecha actual
+
+        Console.WriteLine("Ingrese las medidas (en cm):");
+        float bicepsDerecho = ValidarDecimal("Bíceps Derecho");
+        float bicepsIzquierdo = ValidarDecimal("Bíceps Izquierdo");
+        float antebrazoDerecho = ValidarDecimal("Antebrazo Derecho");
+        float antebrazoIzquierdo = ValidarDecimal("Antebrazo Izquierdo");
+        float musloDerecho = ValidarDecimal("Muslo Derecho");
+        float musloIzquierdo = ValidarDecimal("Muslo Izquierdo");
+        float pecho = ValidarDecimal("Pecho");
+        float hombros = ValidarDecimal("Hombros");
+        float gemeloDerecho = ValidarDecimal("Gemelo Derecho");
+        float gemeloIzquierdo = ValidarDecimal("Gemelo Izquierdo");
+
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        {
+            string query = @"INSERT INTO Registro_Medidas (id_usuario, fecha_registro, 
+                                biceps_derecho, biceps_izquierdo, 
+                                antebrazo_derecho, antebrazo_izquierdo, 
+                                muslo_derecho, muslo_izquierdo, 
+                                pecho, hombros, 
+                                gemelo_derecho, gemelo_izquierdo) 
+                            VALUES (@id_usuario, @fecha_registro, 
+                                @biceps_derecho, @biceps_izquierdo, 
+                                @antebrazo_derecho, @antebrazo_izquierdo, 
+                                @muslo_derecho, @muslo_izquierdo, 
+                                @pecho, @hombros, 
+                                @gemelo_derecho, @gemelo_izquierdo)";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@id_usuario", idUsuario);
+            cmd.Parameters.AddWithValue("@fecha_registro", fechaRegistro);
+            cmd.Parameters.AddWithValue("@biceps_derecho", bicepsDerecho);
+            cmd.Parameters.AddWithValue("@biceps_izquierdo", bicepsIzquierdo);
+            cmd.Parameters.AddWithValue("@antebrazo_derecho", antebrazoDerecho);
+            cmd.Parameters.AddWithValue("@antebrazo_izquierdo", antebrazoIzquierdo);
+            cmd.Parameters.AddWithValue("@muslo_derecho", musloDerecho);
+            cmd.Parameters.AddWithValue("@muslo_izquierdo", musloIzquierdo);
+            cmd.Parameters.AddWithValue("@pecho", pecho);
+            cmd.Parameters.AddWithValue("@hombros", hombros);
+            cmd.Parameters.AddWithValue("@gemelo_derecho", gemeloDerecho);
+            cmd.Parameters.AddWithValue("@gemelo_izquierdo", gemeloIzquierdo);
+
+            conn.Open();
+            int filasAfectadas = cmd.ExecuteNonQuery();
+            conn.Close();
+
+            Console.WriteLine(filasAfectadas > 0 ? "✅ Medidas insertadas correctamente." : "❌ Error al insertar medidas.");
+        }
+        Console.WriteLine("Presione Enter para continuar...");
+        Console.ReadLine();
+    }
+
+    static void ModificarMedidas()
+    {
+        Console.Write("Ingrese el ID del registro de medidas a modificar: ");
+        int idRegistro = ValidarEntero();
+
+        Console.WriteLine("Ingrese las nuevas medidas (en cm):");
+        float bicepsDerecho = ValidarDecimal("Bíceps Derecho");
+        float bicepsIzquierdo = ValidarDecimal("Bíceps Izquierdo");
+        float antebrazoDerecho = ValidarDecimal("Antebrazo Derecho");
+        float antebrazoIzquierdo = ValidarDecimal("Antebrazo Izquierdo");
+        float musloDerecho = ValidarDecimal("Muslo Derecho");
+        float musloIzquierdo = ValidarDecimal("Muslo Izquierdo");
+        float pecho = ValidarDecimal("Pecho");
+        float hombros = ValidarDecimal("Hombros");
+        float gemeloDerecho = ValidarDecimal("Gemelo Derecho");
+        float gemeloIzquierdo = ValidarDecimal("Gemelo Izquierdo");
+
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        {
+            string query = @"UPDATE Registro_Medidas SET 
+                                biceps_derecho = @biceps_derecho, 
+                                biceps_izquierdo = @biceps_izquierdo, 
+                                antebrazo_derecho = @antebrazo_derecho, 
+                                antebrazo_izquierdo = @antebrazo_izquierdo, 
+                                muslo_derecho = @muslo_derecho, 
+                                muslo_izquierdo = @muslo_izquierdo, 
+                                pecho = @pecho, 
+                                hombros = @hombros, 
+                                gemelo_derecho = @gemelo_derecho, 
+                                gemelo_izquierdo = @gemelo_izquierdo 
+                            WHERE id_registro = @id_registro";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@id_registro", idRegistro);
+            cmd.Parameters.AddWithValue("@biceps_derecho", bicepsDerecho);
+            cmd.Parameters.AddWithValue("@biceps_izquierdo", bicepsIzquierdo);
+            cmd.Parameters.AddWithValue("@antebrazo_derecho", antebrazoDerecho);
+            cmd.Parameters.AddWithValue("@antebrazo_izquierdo", antebrazoIzquierdo);
+            cmd.Parameters.AddWithValue("@muslo_derecho", musloDerecho);
+            cmd.Parameters.AddWithValue("@muslo_izquierdo", musloIzquierdo);
+            cmd.Parameters.AddWithValue("@pecho", pecho);
+            cmd.Parameters.AddWithValue("@hombros", hombros);
+            cmd.Parameters.AddWithValue("@gemelo_derecho", gemeloDerecho);
+            cmd.Parameters.AddWithValue("@gemelo_izquierdo", gemeloIzquierdo);
+
+            conn.Open();
+            int filasAfectadas = cmd.ExecuteNonQuery();
+            conn.Close();
+
+            Console.WriteLine(filasAfectadas > 0 ? "✅ Registro actualizado correctamente." : "❌ No se encontró el registro.");
+        }
+        Console.WriteLine("Presione Enter para continuar...");
+        Console.ReadLine();
+    }
+
     // Método para validar que la entrada no sea vacía o nula
     static string ValidarEntrada()
     {
@@ -148,5 +272,30 @@ class Program
         } while (!DateTime.TryParseExact(fecha, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaValida));
 
         return fecha;
+    }
+
+
+
+    // Métodos de validación para registro medidas 
+    static int ValidarEntero()
+    {
+        int valor;
+        while (!int.TryParse(Console.ReadLine(), out valor) || valor <= 0)
+        {
+            Console.WriteLine("⚠ Entrada no válida. Ingrese un número entero válido:");
+        }
+        return valor;
+    }
+
+    static float ValidarDecimal(string mensaje)
+    {
+        float valor;
+        Console.Write($"{mensaje}: ");
+        while (!float.TryParse(Console.ReadLine(), NumberStyles.Float, CultureInfo.InvariantCulture, out valor) || valor <= 0)
+        {
+            Console.WriteLine("⚠ Entrada no válida. Ingrese un valor numérico positivo:");
+            Console.Write($"{mensaje}: ");
+        }
+        return valor;
     }
 }
