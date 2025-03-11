@@ -241,7 +241,7 @@ class Program
     }
 
     // Método para validar que la entrada no sea vacía o nula
-    static string ValidarEntrada()
+   public static string ValidarEntrada()
     {
         string entrada;
         do
