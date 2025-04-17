@@ -2,11 +2,11 @@
 using System.Data.SqlClient;
 using System.Globalization;
 
-class Program
+public class Program
 {
     static string connectionString = "data source=DESKTOP-3HP58V7\\SQLEXPRESS;initial catalog=GymControl;trusted_connection=true;";
 
-    static void Main()
+   public static void Main()
     {
         while (true)
         {
@@ -46,7 +46,7 @@ class Program
     
 }
 
-    static void InsertarUsuario()
+   public static void InsertarUsuario()
     {
         Console.Write("Cedula: ");
         string id_usuario = ValidarEntrada();
@@ -61,7 +61,7 @@ class Program
         string correo = ValidarEntrada();
         Console.Write("Teléfono: ");
         string telefono = ValidarEntrada();
-
+        // prueba
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             string query = "INSERT INTO Usuarios (id_usuario,nombre, apellido, fecha_nacimiento, genero, correo, telefono) " +
@@ -86,7 +86,7 @@ class Program
         Console.ReadLine();
     }
 
-    static void ModificarUsuario()
+   public static void ModificarUsuario()
     {
         Console.Write("Ingrese el ID del usuario a modificar: ");
         int idUsuario;
@@ -127,7 +127,7 @@ class Program
     }
 
     // Métodos para Registro de Medidas
-    static void InsertarMedidas()
+   public static void InsertarMedidas()
     {
         Console.Write("ID del Usuario: ");
         int idUsuario = ValidarEntero();
@@ -185,7 +185,7 @@ class Program
         Console.ReadLine();
     }
 
-    static void ModificarMedidas()
+  public  static void ModificarMedidas()
     {
         Console.Write("Ingrese el ID del registro de medidas a modificar: ");
         int idRegistro = ValidarEntero();
@@ -241,7 +241,7 @@ class Program
     }
 
     // Método para validar que la entrada no sea vacía o nula
-   public static string ValidarEntrada()
+  public static string ValidarEntrada()
     {
         string entrada;
         do
@@ -257,7 +257,7 @@ class Program
     }
 
     // Método para validar la fecha de nacimiento
-    static string ValidarFecha()
+  public  static string ValidarFecha()
     {
         string fecha;
         DateTime fechaValida;
