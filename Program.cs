@@ -61,7 +61,7 @@ public class Program
         string correo = ValidarEntrada();
         Console.Write("Teléfono: ");
         string telefono = ValidarEntrada();
-        // prueba
+        // prueba 2 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             string query = "INSERT INTO Usuarios (id_usuario,nombre, apellido, fecha_nacimiento, genero, correo, telefono) " +
